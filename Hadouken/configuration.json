@@ -1,0 +1,17 @@
+﻿{
+  "Identity": {
+    "Nick": "hadouken",
+    "AlternateNick": "hadouken_",
+    "RealName": "World Warrior",
+    "UserName": "hadouken",
+    "Password": ""
+  },
+  "IrcServer": {
+    "ServerName": "irc.freenode.net",
+    "ServerPort": 6667,
+    "UseSsl": false
+  },
+  "AutoJoinChannels": [
+    "#projectmadlham"
+  ]
+}
