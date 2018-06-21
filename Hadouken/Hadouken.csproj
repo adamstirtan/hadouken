@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IrcDotNet" Version="0.7.0" />
+    <PackageReference Include="ChatSharp" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,18 @@
-﻿using System;
+﻿using ChatSharp;
 
 namespace Hadouken
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var botUser = new IrcUser("hadouken", "hadouken");
+
+            var client = new IrcClient("irc.freenode.net", botUser);
+
+            client.ConnectAsync();
+
+            while (true) { }
         }
     }
 }
