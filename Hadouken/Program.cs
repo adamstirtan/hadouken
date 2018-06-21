@@ -5,6 +5,7 @@ using ChatSharp;
 
 using Newtonsoft.Json;
 
+using Hadouken.Bots;
 using Hadouken.Configuration;
 
 namespace Hadouken
@@ -25,17 +26,9 @@ namespace Hadouken
                     configuration.Identity.RealName),
                 configuration.IrcServer.UseSsl);
 
-            client.ConnectionComplete += (sender, e) =>
-            {
-                foreach (var channel in configuration.AutoJoinChannels)
-                {
-                    client.JoinChannel(channel);
-                }
-            };
+            var bot = new HadoukenBot(client, configuration);
 
-            client.ConnectAsync();
-
-            Console.ReadKey();
+            bot.RunAndBlock();
         }
 
         private static string GetConfigurationDirectory()
