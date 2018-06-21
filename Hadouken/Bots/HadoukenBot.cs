@@ -1,4 +1,4 @@
-﻿using ChatSharp;
+using ChatSharp;
 
 using Hadouken.Commands;
 using Hadouken.Contracts;
@@ -12,6 +12,7 @@ namespace Hadouken.Bots
         {
             Commands.Add(new EchoCommand());
             Commands.Add(new EightBallCommand());
+            Commands.Add(new YellBarfCommand());
         }
     }
 }
