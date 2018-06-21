@@ -6,6 +6,6 @@ namespace Hadouken.Contracts
     {
         string Trigger { get; }
 
-        void Action(IrcClient client, string channel, string args);
+        void Action(IBot bot, string channel, string args);
     }
 }

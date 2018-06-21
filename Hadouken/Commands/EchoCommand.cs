@@ -1,6 +1,4 @@
-﻿using ChatSharp;
-
-using Hadouken.Contracts;
+﻿using Hadouken.Contracts;
 
 namespace Hadouken.Commands
 {
@@ -8,9 +6,9 @@ namespace Hadouken.Commands
     {
         public string Trigger => "!echo";
 
-        public void Action(IrcClient client, string channel, string args)
+        public void Action(IBot bot, string channel, string args)
         {
-            client.SendMessage(args, channel);
+            bot.Client.SendMessage(args, channel);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using ChatSharp;
 using ChatSharp.Events;
 
+using Hadouken.Commands;
 using Hadouken.Contracts;
 
 namespace Hadouken.Bots
@@ -15,7 +16,10 @@ namespace Hadouken.Bots
         {
             Client = client;
             Configuration = configuration;
-            Commands = new List<ICommand>();
+            Commands = new List<ICommand>
+            {
+                new HelpCommand()
+            };
 
             client.ConnectionComplete += ConnectionComplete;
             client.ChannelMessageRecieved += ChannelMessageReceived;
@@ -53,7 +57,7 @@ namespace Hadouken.Bots
             var command = Commands
                 .FirstOrDefault(x => string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
 
-            command?.Action(Client, e.PrivateMessage.Source, string.Join(" ", split.Skip(1)));
+            command?.Action(this, e.PrivateMessage.Source, string.Join(" ", split.Skip(1)));
         }
     }
 }

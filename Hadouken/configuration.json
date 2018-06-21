@@ -12,7 +12,6 @@
     "UseSsl": false
   },
   "AutoJoinChannels": [
-    "#projectmadlham",
-    "#hadouken"
+    "#projectmadlham"
   ]
 }
