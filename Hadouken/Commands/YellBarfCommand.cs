@@ -1,4 +1,4 @@
-using Hadouken.Contracts;
+﻿using Hadouken.Contracts;
 
 namespace Hadouken.Commands
 {
