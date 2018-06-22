@@ -1,3 +1,5 @@
+using System;
+
 namespace Hadouken.Database
 {
 	public class Quote
