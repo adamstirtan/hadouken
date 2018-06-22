@@ -1,4 +1,4 @@
-﻿{
+{
   "Identity": {
     "Nick": "hadouken",
     "AlternateNick": "hadouken_",
@@ -9,9 +9,12 @@
   "IrcServer": {
     "ServerName": "irc.freenode.net",
     "ServerPort": 6667,
-    "UseSsl": false
+    "UseSsl": false,
+    "AutoJoinChannels": [
+    	"#projectmadlham"
+  	]
   },
-  "AutoJoinChannels": [
-    "#projectmadlham"
-  ]
+  "Flags": {
+  	"ConsoleLogging": true
+  }
 }

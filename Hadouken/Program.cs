@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 using ChatSharp;
@@ -31,6 +31,7 @@ namespace Hadouken
             bot.RunAndBlock();
         }
 
+		// TODO this should probably return null and throw FileNotFoundEx
         private static string GetConfigurationDirectory()
         {
             var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

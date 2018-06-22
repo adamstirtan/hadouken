@@ -26,19 +26,33 @@ namespace Hadouken.Bots
         }
 
         public IrcClient Client { get; }
+        
         public IBotConfiguration Configuration { get; }
+        
         public List<ICommand> Commands { get; set; }
 
         public void RunAndBlock()
         {
             Client.ConnectAsync();
-
-            Console.ReadKey();
+            
+            Console.WriteLine("Hadouken bot started");
+            Console.WriteLine("--------------------\n");
+            Console.WriteLine("Press 'q' to quit"):
+            
+            while (true)
+            {
+            	var input = Console.ReadKey();
+            	
+            	if (input.ToLower() == "q")
+            	{
+            		break;
+            	}
+            }
         }
 
         public void ConnectionComplete(object sender, EventArgs e)
         {
-            foreach (var channel in Configuration.AutoJoinChannels)
+            foreach (var channel in Configuration.IrcServer.AutoJoinChannels)
             {
                 Client.JoinChannel(channel);
             }
@@ -47,17 +61,30 @@ namespace Hadouken.Bots
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
         {
             var content = e.PrivateMessage.Message;
-
-            if (!content.StartsWith("!"))
+            var nick = e.PrivateMessage.Nick;
+            
+            if (content.StartsWith("!"))
             {
-                return;
+                var split = content.Split(" ");
+	            var command = Commands
+	                .FirstOrDefault(x => string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
+	
+	            command?.Action(this, e.PrivateMessage.Source, string.Join(" ", split.Skip(1)));
             }
-
-            var split = content.Split(" ");
-            var command = Commands
-                .FirstOrDefault(x => string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
-
-            command?.Action(this, e.PrivateMessage.Source, string.Join(" ", split.Skip(1)));
+            else
+            {
+            	using (var db = new HadoukenContext())
+                {
+                	db.Messages.Add(new Message
+                	{
+                		Content = content,
+                		Nick = nick,
+                		Created = DateTime.UtcNow
+                	});
+                	
+                	db.SaveChanges();
+                }
+            }
         }
     }
 }
