@@ -6,6 +6,6 @@ namespace Hadouken.Contracts
     {
         BotIdentity Identity { get; set; }
         IrcServer IrcServer { get; set; }
-        string[] AutoJoinChannels { get; set; }
+        Flags Flags { get; set; }
     }
 }
