@@ -11,10 +11,10 @@
     "ServerPort": 6667,
     "UseSsl": false,
     "AutoJoinChannels": [
-    	"#projectmadlham"
-  	]
+      "#hadouken"
+    ]
   },
   "Flags": {
-  	"ConsoleLogging": true
+    "ConsoleLogging": true
   }
 }

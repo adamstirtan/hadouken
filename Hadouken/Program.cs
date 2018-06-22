@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 using Hadouken.Bots;
 using Hadouken.Configuration;
+using Hadouken.Database;
 
 namespace Hadouken
 {
@@ -26,12 +27,17 @@ namespace Hadouken
                     configuration.Identity.RealName),
                 configuration.IrcServer.UseSsl);
 
+            using (var db = new HadoukenContext())
+            {
+                db.Database.EnsureCreated();
+            }
+
             var bot = new HadoukenBot(client, configuration);
 
             bot.RunAndBlock();
         }
 
-		// TODO this should probably return null and throw FileNotFoundEx
+        // TODO this should probably return null and throw FileNotFoundEx
         private static string GetConfigurationDirectory()
         {
             var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
