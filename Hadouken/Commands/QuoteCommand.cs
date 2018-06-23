@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 
 using Hadouken.Contracts;
+using Hadouken.Database;
 
 namespace Hadouken.Commands
 {
@@ -12,9 +14,13 @@ namespace Hadouken.Commands
 		{
 			if (string.IsNullOrEmpty(args))
 			{
+				Quote quote;
+
 				using (var db = new HadoukenContext())
 				{
-					var quote = db.Quotes.FirstOrDefault();
+					quote = db.Quotes
+						.OrderBy(x => Guid.NewGuid())
+						.FirstOrDefault();
 				}
 				
 				if (quote == null)
@@ -28,11 +34,34 @@ namespace Hadouken.Commands
 			}
 			else
 			{
-				var arg = args.Split(" ");
-				
-				if (arg.ToLower().Equals("-a"))
+				var split = args.Split(" ");
+
+				if (args.Length != 3)
 				{
-					
+					bot.Client.SendMessage("Usage: !quote add <nick> <quote>");
+				}
+				else if (split[0].ToLower().Equals("add"))
+				{
+					using (var db = new HadoukenContext())
+					{
+						var quote = new Quote
+						{
+							Nick = split[1],
+							Content = string.Join(" ", split.Skip(2)),
+							Created = DateTime.UtcNow
+						};
+
+						db.Quotes.Add(quote);
+
+						if (db.SaveChanges() > 0)
+						{
+							bot.Client.SendMessage($"Added quote #{quote.Id}", channel);
+						}
+						else
+						{
+							bot.Client.SendMessage("There was a problem saving that quote, blame rhaydeo.", channel);
+						}
+					}
 				}
 			}
 		}

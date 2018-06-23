@@ -39,7 +39,7 @@ namespace Hadouken.Commands
 	
 		public string Trigger => "!aolsay";
 		
-		public void Action(IrcBot bot, string channel, string args)
+		public void Action(IBot bot, string channel, string args)
 		{
 			bot.Client.SendMessage(Responses[Random.Next(Responses.Length)], channel);
 		}
