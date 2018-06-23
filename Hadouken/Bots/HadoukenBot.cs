@@ -13,6 +13,7 @@ namespace Hadouken.Bots
             Commands.Add(new EchoCommand());
             Commands.Add(new EightBallCommand());
             Commands.Add(new YellBarfCommand());
+            Commands.Add(new QuoteCommand());
         }
     }
 }
