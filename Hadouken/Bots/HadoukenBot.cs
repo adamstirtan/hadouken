@@ -15,6 +15,7 @@ namespace Hadouken.Bots
             Commands.Add(new YellBarfCommand());
             Commands.Add(new QuoteCommand());
             Commands.Add(new AolSayCommand());
+            Commands.Add(new GiphyCommand());
         }
     }
 }
