@@ -35,12 +35,12 @@ namespace Hadouken.Commands
 			else
 			{
 				var split = args.Split(" ");
-
-				if (args.Length != 3)
-				{
-					bot.Client.SendMessage("Usage: !quote add <nick> <quote>");
-				}
-				else if (split[0].ToLower().Equals("add"))
+                
+                if (split.Length < 3)
+                {
+                    bot.Client.SendMessage("Usage: !quote | !quote add <nick> <content>", channel);
+                }
+                else if (split[0].ToLower().Equals("add"))
 				{
 					using (var db = new HadoukenContext())
 					{

@@ -11,7 +11,7 @@
     "ServerPort": 6667,
     "UseSsl": false,
     "AutoJoinChannels": [
-      "#hadouken"
+      "#projectmadlham"
     ]
   },
   "Flags": {
