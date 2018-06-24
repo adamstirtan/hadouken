@@ -10,7 +10,7 @@ namespace Hadouken.Commands
 {
     public sealed class GiphyCommand : ICommand
     {
-        private static readonly string ApiKey = "";
+        private static readonly string ApiKey = "FwFiSEZx7ZGnx8VobX6VOq6Y4oKXMbDA";
 
         public string Trigger => "!gif";
 
