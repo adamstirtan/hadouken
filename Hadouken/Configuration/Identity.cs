@@ -1,6 +1,6 @@
 namespace Hadouken.Configuration
 {
-    public sealed class BotIdentity
+    public sealed class Identity
     {
         public string Nick { get; set; }
         public string AlternateNick { get; set; }
