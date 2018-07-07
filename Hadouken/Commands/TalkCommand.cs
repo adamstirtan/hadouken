@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
+
+using MarkovSharp.TokenisationStrategies;
 
 using Hadouken.Contracts;
 using Hadouken.Database;
@@ -26,20 +27,27 @@ namespace Hadouken.Commands
             		return;
             	}
             	
-            	List<Message> messages;
+            	string[] messages;
             	
             	using (var db = new HadoukenContext())
             	{
             		messages = db.Messages
             			.Where(x => x.Nick == split[0])
-            			.ToList();
+						.Select(x => x.Content)
+            			.ToArray();
             	}
             	
-            	if (messages.Count < 5)
+            	if (messages.Length < 5)
             	{
             		bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
             		return;
             	}
+
+				var model = new StringMarkov(1);
+
+				model.Learn(messages);
+
+				bot.Client.SendMessage(model.Walk().First(), channel);
             }
         }
 	}
