@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 using GiphyDotNet.Manager;
 using GiphyDotNet.Model.Parameters;
@@ -18,7 +18,7 @@ namespace Hadouken.Commands
         {
             if (string.IsNullOrEmpty(args))
             {
-                bot.Client.SendMessage("Usage: !gif <search>", channel);
+                bot.Client.SendMessage($"Usage: {Trigger} <search>", channel);
             }
             else
             {
