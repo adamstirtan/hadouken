@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
+
+using Hadouken.Contracts;
+using Hadouken.Database;
+
 namespace Hadouken.Commands
 {
 	public sealed class TalkCommand : ICommand
@@ -31,7 +37,7 @@ namespace Hadouken.Commands
             	
             	if (messages.Count < 5)
             	{
-            		bot.Client.SendMessage($"{nick} hasn't said enough to make them talk, channel);
+            		bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
             		return;
             	}
             }
