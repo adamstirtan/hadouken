@@ -1,7 +1,5 @@
 using System.Linq;
 
-using MarkovSharp.TokenisationStrategies;
-
 using Hadouken.Contracts;
 using Hadouken.Database;
 
@@ -42,12 +40,6 @@ namespace Hadouken.Commands
             		bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
             		return;
             	}
-
-				var model = new StringMarkov(1);
-
-				model.Learn(messages);
-
-				bot.Client.SendMessage(model.Walk().First(), channel);
             }
         }
 	}
