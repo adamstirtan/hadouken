@@ -58,7 +58,7 @@ namespace Hadouken.Commands
 
                 var result = string.Join(" ", chain.Chain(new Random(DateTime.UtcNow.Millisecond)));
 
-                bot.Client.SendMessage(result, channel);
+                bot.Client.SendMessage($"{split[0]}: {result}", channel);
             }
         }
     }
