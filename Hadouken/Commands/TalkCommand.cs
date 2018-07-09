@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+
+using Markov;
 
 using Hadouken.Contracts;
 using Hadouken.Database;
@@ -39,7 +42,18 @@ namespace Hadouken.Commands
             	{
             		bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
             		return;
-            	}
+				}
+
+				var chain = new MarkovChain<string>(1);
+
+				foreach (var message in messages)
+				{
+					chain.Add(message.Split(" "));
+				}
+
+				var result = string.Join(" ", chain.Chain(new Random(DateTime.UtcNow.Millisecond)));
+
+				bot.Client.SendMessage(result, channel);
             }
         }
 	}
