@@ -1,10 +1,10 @@
 {
   "Identity": {
-    "Nick": "hadouken",
+    "Nick": "ggot",
     "AlternateNick": "hadouken_",
     "RealName": "World Warrior",
     "UserName": "hadouken",
-    "Password": ""
+    "Password": "hadouken"
   },
   "IrcServer": {
     "ServerName": "irc.freenode.net",

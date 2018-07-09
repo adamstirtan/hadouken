@@ -57,12 +57,19 @@ namespace Hadouken.Bots
             {
                 Client.JoinChannel(channel);
             }
+
+            Client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
         }
 
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
         {
             var content = e.PrivateMessage.Message;
             var nick = e.PrivateMessage.User.Nick;
+
+            if (Configuration.Flags.ConsoleLogging)
+            {
+                Console.WriteLine($"<{nick}>: {content}");
+            }
 
             if (content.StartsWith("!"))
             {
