@@ -44,13 +44,13 @@ namespace Hadouken.Commands
                     return;
                 }
 
-                var chain = new MarkovChain<string>(2);
+                var chain = new MarkovChain<string>(1);
 
                 foreach (var message in messages)
                 {
                     var spaceSplit = message.Split(" ");
 
-                    if (spaceSplit.Length > 3)
+                    if (spaceSplit.Length > 5)
                     {
                         chain.Add(spaceSplit);
                     }
