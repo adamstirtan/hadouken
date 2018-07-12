@@ -17,6 +17,7 @@ namespace Hadouken.Bots
             Commands.Add(new AolSayCommand());
             Commands.Add(new GiphyCommand());
             Commands.Add(new TalkCommand());
+            Commands.Add(new AolTalkCommand());
         }
     }
 }
