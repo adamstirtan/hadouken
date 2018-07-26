@@ -37,17 +37,10 @@ namespace Hadouken.Bots
             Client.ConnectAsync();
 
             Console.WriteLine("Hadouken bot started");
-            Console.WriteLine("--------------------\n");
-            Console.WriteLine("Press 'q' to quit");
 
             while (true)
             {
-                var input = Console.ReadKey();
-
-                if (input.KeyChar == 'q')
-                {
-                    break;
-                }
+                Console.Read();
             }
         }
 
