@@ -53,7 +53,14 @@ namespace Hadouken.Commands
                     }
                     else
                     {
-                        bot.Client.SendMessage($"Nothing found for {args}", channel);
+                        try
+                        {
+                            bot.Client.SendMessage($"Nothing found for {args}", channel);
+                        }
+                        catch
+                        {
+                            bot.Client.SendMessage("There's something fucky in that definition that can't be displayed here", channel);
+                        }
                     }
                 }
             }
