@@ -49,18 +49,18 @@ namespace Hadouken.Commands
                         json.list[0] != null &&
                         json.list[0].definition != null)
                     {
-                        bot.Client.SendMessage($"{args}: {json.list[0].definition}", channel);
-                    }
-                    else
-                    {
                         try
                         {
-                            bot.Client.SendMessage($"Nothing found for {args}", channel);
+                            bot.Client.SendMessage($"{args}: {json.list[0].definition}", channel);
                         }
                         catch
                         {
                             bot.Client.SendMessage("There's something fucky in that definition that can't be displayed here", channel);
                         }
+                    }
+                    else
+                    {
+                        bot.Client.SendMessage($"Nothing found for {args}", channel);
                     }
                 }
             }
