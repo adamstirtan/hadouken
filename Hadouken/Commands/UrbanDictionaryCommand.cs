@@ -46,7 +46,7 @@ namespace Hadouken.Commands
                     dynamic json = JObject.Parse(result);
 
                     if (json.list != null &&
-                        json.list[0] != null &&
+                        json.list.Count > 0 &&
                         json.list[0].definition != null)
                     {
                         try
