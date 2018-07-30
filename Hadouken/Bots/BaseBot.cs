@@ -23,6 +23,7 @@ namespace Hadouken.Bots
             };
 
             client.ConnectionComplete += ConnectionComplete;
+            client.UserPartedChannel += UserPartedChannel;
             client.ChannelMessageRecieved += ChannelMessageReceived;
         }
 
@@ -52,6 +53,14 @@ namespace Hadouken.Bots
             }
 
             Client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
+        }
+
+        public void UserPartedChannel(object sender, ChannelUserEventArgs e)
+        {
+            if (e.User.Nick == Configuration.Identity.Nick)
+            {
+                Client.JoinChannel($"#{e.Channel.Name}");
+            }
         }
 
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
