@@ -15,6 +15,7 @@
     ]
   },
   "Flags": {
+    "RejoinOnKick": true,
     "ConsoleLogging": true
   }
 }
