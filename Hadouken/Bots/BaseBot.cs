@@ -37,8 +37,6 @@ namespace Hadouken.Bots
         {
             Client.ConnectAsync();
 
-            Console.WriteLine("Hadouken bot started");
-
             while (true)
             {
                 Console.Read();

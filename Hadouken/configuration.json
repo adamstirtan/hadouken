@@ -1,17 +1,17 @@
 {
   "Identity": {
-    "Nick": "ggot",
+    "Nick": "hadouken",
     "AlternateNick": "hadouken_",
     "RealName": "World Warrior",
     "UserName": "hadouken",
-    "Password": "hadouken"
+    "Password": ""
   },
   "IrcServer": {
-    "ServerName": "irc.freenode.net",
+    "ServerName": "irc.rizon.net",
     "ServerPort": 6667,
     "UseSsl": false,
     "AutoJoinChannels": [
-      "#projectmadlham"
+      "#piratewarez"
     ]
   },
   "Flags": {
