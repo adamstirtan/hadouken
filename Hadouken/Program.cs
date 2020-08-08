@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.IO;
 using System.Threading;
 
@@ -16,24 +17,27 @@ namespace Hadouken
     {
         private static ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
-        private static void Main()
+        private static void Main(string[] args)
         {
+            var configurationFile = "configuration.json";
+
+            if (args.Any())
+            {
+                configurationFile = args.First();
+            }
+
+            Console.WriteLine($"Configuration: {configurationFile}");
+
             var configuration = JsonConvert.DeserializeObject<BotConfiguration>(
-                File.ReadAllText(Path.Combine(GetConfigurationDirectory(), "configuration.json")));
+                File.ReadAllText(Path.Combine(GetConfigurationDirectory(), configurationFile)));
 
             var client = new IrcClient(
-                $"{configuration.IrcServer.ServerName}:{configuration.IrcServer.ServerPort}",
-                new IrcUser(
+                $"{configuration.IrcServer.ServerName}:{configuration.IrcServer.ServerPort}", new IrcUser(
                     configuration.Identity.Nick,
                     configuration.Identity.UserName,
                     configuration.Identity.Password,
                     configuration.Identity.RealName),
-                configuration.IrcServer.UseSsl);
-
-            using (var db = new HadoukenContext())
-            {
-                db.Database.EnsureCreated();
-            }
+                    configuration.IrcServer.UseSsl);
 
             Console.CancelKeyPress += (sender, args) =>
             {
@@ -41,7 +45,13 @@ namespace Hadouken
                 args.Cancel = true;
             };
 
-            new HadoukenBot(client, configuration).Run();
+            using (var db = new HadoukenContext())
+            {
+                db.Database.EnsureCreated();
+            }
+
+            new HadoukenBot(client, configuration)
+                .Run();
 
             QuitEvent.WaitOne();
         }
