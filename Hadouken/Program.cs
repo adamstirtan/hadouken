@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using ChatSharp;
 
 using Newtonsoft.Json;
@@ -15,21 +17,29 @@ namespace Hadouken
 {
     internal class Program
     {
-        private static ManualResetEvent QuitEvent = new ManualResetEvent(false);
+        private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
         private static void Main(string[] args)
         {
-            var configurationFile = "configuration.json";
+            string configurationPath = null;
+            string configurationFile = "configuration.json";
 
             if (args.Any())
             {
                 configurationFile = args.First();
             }
 
-            Console.WriteLine($"Configuration: {configurationFile}");
+            var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+
+            if (baseDirectory.Parent?.Parent?.Parent == null)
+            {
+                throw new DirectoryNotFoundException();
+            }
+
+            configurationPath = baseDirectory.Parent?.Parent?.Parent.FullName;
 
             var configuration = JsonConvert.DeserializeObject<BotConfiguration>(
-                File.ReadAllText(Path.Combine(GetConfigurationDirectory(), configurationFile)));
+                File.ReadAllText(Path.Combine(configurationPath, configurationFile)));
 
             var client = new IrcClient(
                 $"{configuration.IrcServer.ServerName}:{configuration.IrcServer.ServerPort}", new IrcUser(
@@ -50,22 +60,21 @@ namespace Hadouken
                 db.Database.EnsureCreated();
             }
 
-            new HadoukenBot(client, configuration)
-                .Run();
+            var services = ConfigureServices();
+            var serviceProvider = services.BuildServiceProvider();
+
+            serviceProvider.GetService<HadoukenBot>().Run();
 
             QuitEvent.WaitOne();
         }
 
-        private static string GetConfigurationDirectory()
+        private static IServiceCollection ConfigureServices()
         {
-            var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            IServiceCollection services = new ServiceCollection();
 
-            if (baseDirectory.Parent?.Parent?.Parent != null)
-            {
-                return baseDirectory.Parent.Parent.Parent.FullName;
-            }
+            services.AddTransient<HadoukenBot>();
 
-            throw new DirectoryNotFoundException();
+            return services;
         }
     }
 }
