@@ -92,17 +92,17 @@ namespace Hadouken.Bots
             }
             else
             {
-                using (var db = new HadoukenContext())
-                {
-                    db.Messages.Add(new Message
-                    {
-                        Content = content,
-                        Nick = nick,
-                        Created = DateTime.UtcNow
-                    });
+                //using (var db = new HadoukenContext())
+                //{
+                //    db.Messages.Add(new Message
+                //    {
+                //        Content = content,
+                //        Nick = nick,
+                //        Created = DateTime.UtcNow
+                //    });
 
-                    db.SaveChanges();
-                }
+                //    db.SaveChanges();
+                //}
             }
         }
     }

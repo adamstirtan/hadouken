@@ -3,6 +3,7 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using ChatSharp;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 using Hadouken.Bots;
 using Hadouken.Configuration;
 using Hadouken.Database;
+using Hadouken.Contracts;
 
 namespace Hadouken
 {
@@ -51,26 +53,34 @@ namespace Hadouken
 
             Console.CancelKeyPress += (sender, args) =>
             {
-                QuitEvent.Set();
                 args.Cancel = true;
+
+                QuitEvent.Set();
             };
 
-            using (var db = new HadoukenContext())
-            {
-                db.Database.EnsureCreated();
-            }
+            //using (var db = new HadoukenContext())
+            //{
+            //    db.Database.EnsureCreated();
+            //}
 
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.GetService<HadoukenBot>().Run();
+            IBot bot = serviceProvider.GetService<HadoukenBot>();
+            bot.Run();
 
-            QuitEvent.WaitOne();
+            //QuitEvent.WaitOne();
         }
 
         private static IServiceCollection ConfigureServices()
         {
             IServiceCollection services = new ServiceCollection();
+
+            services.AddDbContext<HadoukenContext>(options =>
+            {
+                // Issue: https://github.com/adamstirtan/hadouken/issues/1
+                options.UseSqlite("bot.db");
+            });
 
             services.AddTransient<HadoukenBot>();
 

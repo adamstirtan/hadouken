@@ -4,6 +4,10 @@ namespace Hadouken.Database
 {
 	public sealed class HadoukenContext : DbContext
 	{
+		public HadoukenContext(DbContextOptions<HadoukenContext> options)
+			: base(options)
+		{ }
+
 		public DbSet<Message> Messages { get; set; }
 		public DbSet<Quote> Quotes { get; set; }
 		

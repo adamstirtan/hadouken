@@ -14,52 +14,52 @@ namespace Hadouken.Commands
 
         public void Action(IBot bot, string channel, string args)
         {
-            if (string.IsNullOrEmpty(args))
-            {
-                bot.Client.SendMessage($"Usage: {Trigger} <nick>", channel);
-            }
-            else
-            {
-                var split = args.Split(" ");
+            //if (string.IsNullOrEmpty(args))
+            //{
+            //    bot.Client.SendMessage($"Usage: {Trigger} <nick>", channel);
+            //}
+            //else
+            //{
+            //    var split = args.Split(" ");
 
-                if (split.Length != 1)
-                {
-                    bot.Client.SendMessage($"Usage: {Trigger} <nick>", channel);
-                    return;
-                }
+            //    if (split.Length != 1)
+            //    {
+            //        bot.Client.SendMessage($"Usage: {Trigger} <nick>", channel);
+            //        return;
+            //    }
 
-                string[] messages;
+            //    string[] messages;
 
-                using (var db = new HadoukenContext())
-                {
-                    messages = db.Messages
-                        .Where(x => x.Nick == split[0])
-                        .Select(x => x.Content)
-                        .ToArray();
-                }
+            //    using (var db = new HadoukenContext())
+            //    {
+            //        messages = db.Messages
+            //            .Where(x => x.Nick == split[0])
+            //            .Select(x => x.Content)
+            //            .ToArray();
+            //    }
 
-                if (messages.Length < 5)
-                {
-                    bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
-                    return;
-                }
+            //    if (messages.Length < 5)
+            //    {
+            //        bot.Client.SendMessage($"{split[0]} hasn't said enough to make them talk", channel);
+            //        return;
+            //    }
 
-                var chain = new MarkovChain<string>(1);
+            //    var chain = new MarkovChain<string>(1);
 
-                foreach (var message in messages)
-                {
-                    var spaceSplit = message.Split(" ");
+            //    foreach (var message in messages)
+            //    {
+            //        var spaceSplit = message.Split(" ");
 
-                    if (spaceSplit.Length > 5)
-                    {
-                        chain.Add(spaceSplit);
-                    }
-                }
+            //        if (spaceSplit.Length > 5)
+            //        {
+            //            chain.Add(spaceSplit);
+            //        }
+            //    }
 
-                var result = string.Join(" ", chain.Chain(new Random(DateTime.UtcNow.Millisecond)));
+            //    var result = string.Join(" ", chain.Chain(new Random(DateTime.UtcNow.Millisecond)));
 
-                bot.Client.SendMessage($"{split[0]}: {result}", channel);
-            }
+            //    bot.Client.SendMessage($"{split[0]}: {result}", channel);
+            //}
         }
     }
 }
