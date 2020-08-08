@@ -33,7 +33,7 @@ namespace Hadouken.Bots
 
         public List<ICommand> Commands { get; set; }
 
-        public void RunAndBlock()
+        public void Run()
         {
             Client.ConnectAsync();
 

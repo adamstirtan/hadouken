@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 using ChatSharp;
 
@@ -13,6 +14,8 @@ namespace Hadouken
 {
     internal class Program
     {
+        private static ManualResetEvent QuitEvent = new ManualResetEvent(false);
+
         private static void Main()
         {
             var configuration = JsonConvert.DeserializeObject<BotConfiguration>(
@@ -32,12 +35,17 @@ namespace Hadouken
                 db.Database.EnsureCreated();
             }
 
-            var bot = new HadoukenBot(client, configuration);
+            Console.CancelKeyPress += (sender, args) =>
+            {
+                QuitEvent.Set();
+                args.Cancel = true;
+            };
 
-            bot.RunAndBlock();
+            new HadoukenBot(client, configuration).Run();
+
+            QuitEvent.WaitOne();
         }
 
-        // TODO this should probably return null and throw FileNotFoundEx
         private static string GetConfigurationDirectory()
         {
             var baseDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

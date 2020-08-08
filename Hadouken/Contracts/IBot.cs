@@ -14,7 +14,7 @@ namespace Hadouken.Contracts
 
         List<ICommand> Commands { get; set; }
 
-        void RunAndBlock();
+        void Run();
 
         void ConnectionComplete(object sender, EventArgs e);
 
