@@ -15,7 +15,7 @@ namespace Hadouken.Commands
                 .OrderBy(x => x.Trigger)
                 .Select(x => x.Trigger);
 
-            bot.Client.SendMessage($"Available commands: {string.Join(", ", commands)}", channel);
+            bot.Client.SendMessage($"Commands: {string.Join(", ", commands)}", channel);
         }
     }
 }

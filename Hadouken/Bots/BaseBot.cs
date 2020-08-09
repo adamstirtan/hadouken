@@ -10,6 +10,7 @@ using ChatSharp.Events;
 
 using Hadouken.Commands;
 using Hadouken.Configuration;
+using Hadouken.Database.Repositories;
 
 namespace Hadouken.Bots
 {
@@ -17,9 +18,15 @@ namespace Hadouken.Bots
     {
         private readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
-        protected BaseBot(IOptions<BotConfiguration> options)
+        private readonly IMessageRepository _messageRepository;
+
+        protected BaseBot(
+            IOptions<BotConfiguration> options,
+            IMessageRepository messageRepository)
         {
             Configuration = options.Value;
+
+            _messageRepository = messageRepository;
 
             var ircUser = new IrcUser(
                 Configuration.Identity.Nick,
@@ -38,6 +45,8 @@ namespace Hadouken.Bots
 
             Console.CancelKeyPress += (sender, args) =>
             {
+                Console.WriteLine("Shutting down...");
+
                 args.Cancel = true;
 
                 QuitEvent.Set();
@@ -57,6 +66,7 @@ namespace Hadouken.Bots
         public void Run()
         {
             Client.ConnectAsync();
+
             QuitEvent.WaitOne();
         }
 

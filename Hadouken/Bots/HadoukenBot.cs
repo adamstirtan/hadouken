@@ -2,13 +2,16 @@ using Microsoft.Extensions.Options;
 
 using Hadouken.Commands;
 using Hadouken.Configuration;
+using Hadouken.Database.Repositories;
 
 namespace Hadouken.Bots
 {
     public class HadoukenBot : BaseBot
     {
-        public HadoukenBot(IOptions<BotConfiguration> options)
-            : base(options)
+        public HadoukenBot(
+            IOptions<BotConfiguration> options,
+            IMessageRepository messageRepository)
+            : base(options, messageRepository)
         {
             Commands.Add(new EchoCommand());
             Commands.Add(new EightBallCommand());
