@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json.Linq;
 
+using Hadouken.Bots;
 using Hadouken.Common;
-using Hadouken.Contracts;
 
 namespace Hadouken.Commands
 {
@@ -33,7 +33,7 @@ namespace Hadouken.Commands
                     Task<string> task = Task.Run(async () =>
                         await client.GetStringAsync(
                             $"http://api.urbandictionary.com/v0/define?term={args}"));
-                    
+
                     result = task.Result;
                 }
 

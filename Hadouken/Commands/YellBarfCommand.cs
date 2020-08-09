@@ -1,14 +1,14 @@
-﻿using Hadouken.Contracts;
+﻿using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {
-	public sealed class YellBarfCommand : ICommand
-	{
-		public string Trigger => "!yellbarf";
-		
-		public void Action(IBot bot, string channel, string args)
-		{
-			bot.Client.SendMessage($"{args.ToUpper()}!!", channel);
-		}
-	}
+    public sealed class YellBarfCommand : ICommand
+    {
+        public string Trigger => "!yellbarf";
+
+        public void Action(IBot bot, string channel, string args)
+        {
+            bot.Client.SendMessage($"{args.ToUpper()}!!", channel);
+        }
+    }
 }

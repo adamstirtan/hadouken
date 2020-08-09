@@ -1,6 +1,6 @@
-﻿using ChatSharp;
+﻿using Hadouken.Bots;
 
-namespace Hadouken.Contracts
+namespace Hadouken.Commands
 {
     public interface ICommand
     {

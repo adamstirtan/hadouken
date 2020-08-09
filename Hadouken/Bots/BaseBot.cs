@@ -1,46 +1,63 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+
+using Microsoft.Extensions.Options;
 
 using ChatSharp;
 using ChatSharp.Events;
 
 using Hadouken.Commands;
-using Hadouken.Contracts;
-using Hadouken.Database;
+using Hadouken.Configuration;
 
 namespace Hadouken.Bots
 {
     public abstract class BaseBot : IBot
     {
-        protected BaseBot(IrcClient client, IBotConfiguration configuration)
+        private readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
+
+        protected BaseBot(IOptions<BotConfiguration> options)
         {
-            Client = client;
-            Configuration = configuration;
+            Configuration = options.Value;
+
+            var ircUser = new IrcUser(
+                Configuration.Identity.Nick,
+                Configuration.Identity.UserName,
+                Configuration.Identity.Password,
+                Configuration.Identity.RealName);
+
+            Client = new IrcClient($"{Configuration.IrcServer.ServerName}:{Configuration.IrcServer.ServerPort}",
+                ircUser,
+                Configuration.IrcServer.UseSsl);
+
             Commands = new List<ICommand>
             {
                 new HelpCommand()
             };
 
-            client.ConnectionComplete += ConnectionComplete;
-            client.UserKicked += UserKicked;
-            client.ChannelMessageRecieved += ChannelMessageReceived;
+            Console.CancelKeyPress += (sender, args) =>
+            {
+                args.Cancel = true;
+
+                QuitEvent.Set();
+            };
+
+            Client.ConnectionComplete += ConnectionComplete;
+            Client.UserKicked += UserKicked;
+            Client.ChannelMessageRecieved += ChannelMessageReceived;
         }
 
         public IrcClient Client { get; }
 
-        public IBotConfiguration Configuration { get; }
+        public BotConfiguration Configuration { get; }
 
         public List<ICommand> Commands { get; set; }
 
         public void Run()
         {
             Client.ConnectAsync();
-
-            while (true)
-            {
-                Console.Read();
-            }
+            QuitEvent.WaitOne();
         }
 
         public void ConnectionComplete(object sender, EventArgs e)

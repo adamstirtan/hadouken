@@ -4,7 +4,7 @@ using GiphyDotNet.Manager;
 using GiphyDotNet.Model.Parameters;
 using GiphyDotNet.Model.Results;
 
-using Hadouken.Contracts;
+using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {

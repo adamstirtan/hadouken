@@ -2,8 +2,8 @@
 
 using Markov;
 
+using Hadouken.Bots;
 using Hadouken.Common;
-using Hadouken.Contracts;
 
 namespace Hadouken.Commands
 {

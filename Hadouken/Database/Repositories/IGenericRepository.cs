@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 using Hadouken.Database;
 
-namespace Hadouken.Contracts
+namespace Hadouken.Database.Repositories
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {

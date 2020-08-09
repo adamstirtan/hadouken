@@ -1,14 +1,14 @@
-using ChatSharp;
+using Microsoft.Extensions.Options;
 
 using Hadouken.Commands;
-using Hadouken.Contracts;
+using Hadouken.Configuration;
 
 namespace Hadouken.Bots
 {
     public class HadoukenBot : BaseBot
     {
-        public HadoukenBot(IrcClient client, IBotConfiguration configuration)
-            : base(client, configuration)
+        public HadoukenBot(IOptions<BotConfiguration> options)
+            : base(options)
         {
             Commands.Add(new EchoCommand());
             Commands.Add(new EightBallCommand());

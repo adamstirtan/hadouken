@@ -5,8 +5,6 @@ using System.Linq.Expressions;
 
 using Microsoft.EntityFrameworkCore;
 
-using Hadouken.Contracts;
-
 namespace Hadouken.Database.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity

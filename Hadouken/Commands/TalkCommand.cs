@@ -3,7 +3,7 @@ using System.Linq;
 
 using Markov;
 
-using Hadouken.Contracts;
+using Hadouken.Bots;
 using Hadouken.Database;
 
 namespace Hadouken.Commands
