@@ -41,6 +41,7 @@ namespace Hadouken
             services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
 
             services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IQuoteRepository, QuoteRepository>();
 
             services.AddTransient<HadoukenBot>();
 
