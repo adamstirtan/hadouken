@@ -22,11 +22,6 @@ namespace Hadouken
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            //using (var context = serviceProvider.GetRequiredService<HadoukenContext>())
-            //{
-            //    context.Database.Migrate();
-            //}
-
             serviceProvider
                 .GetRequiredService<HadoukenBot>()
                 .Run();
