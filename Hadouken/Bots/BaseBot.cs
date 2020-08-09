@@ -11,6 +11,7 @@ using ChatSharp.Events;
 using Hadouken.Commands;
 using Hadouken.Configuration;
 using Hadouken.Database.Repositories;
+using Hadouken.Database;
 
 namespace Hadouken.Bots
 {
@@ -28,14 +29,12 @@ namespace Hadouken.Bots
 
             _messageRepository = messageRepository;
 
-            var ircUser = new IrcUser(
-                Configuration.Identity.Nick,
-                Configuration.Identity.UserName,
-                Configuration.Identity.Password,
-                Configuration.Identity.RealName);
-
-            Client = new IrcClient($"{Configuration.IrcServer.ServerName}:{Configuration.IrcServer.ServerPort}",
-                ircUser,
+            Client = new IrcClient(
+                $"{Configuration.IrcServer.ServerName}:{Configuration.IrcServer.ServerPort}", new IrcUser(
+                    Configuration.Identity.Nick,
+                    Configuration.Identity.UserName,
+                    Configuration.Identity.Password,
+                    Configuration.Identity.RealName),
                 Configuration.IrcServer.UseSsl);
 
             Commands = new List<ICommand>
@@ -45,16 +44,15 @@ namespace Hadouken.Bots
 
             Console.CancelKeyPress += (sender, args) =>
             {
-                Console.WriteLine("Shutting down...");
-
                 args.Cancel = true;
-
                 QuitEvent.Set();
             };
 
             Client.ConnectionComplete += ConnectionComplete;
-            Client.UserKicked += UserKicked;
             Client.ChannelMessageRecieved += ChannelMessageReceived;
+            Client.UserKicked += UserKicked;
+            Client.UserJoinedChannel += UserJoinedChannel;
+            Client.UserPartedChannel += UserPartedChannel;
         }
 
         public IrcClient Client { get; }
@@ -80,25 +78,6 @@ namespace Hadouken.Bots
             Client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
         }
 
-        private void UserKicked(object sender, KickEventArgs e)
-        {
-            if (Configuration.Flags.RejoinOnKick)
-            {
-                if (e.Kicked.Nick == Configuration.Identity.Nick)
-                {
-                    Client.JoinChannel(e.Channel.Name);
-                }
-            }
-        }
-
-        public void UserPartedChannel(object sender, ChannelUserEventArgs e)
-        {
-            if (e.User.Nick == Configuration.Identity.Nick)
-            {
-                Client.JoinChannel(e.Channel.Name);
-            }
-        }
-
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
         {
             var content = e.PrivateMessage.Message;
@@ -112,24 +91,41 @@ namespace Hadouken.Bots
             if (content.StartsWith("!"))
             {
                 var split = content.Split(" ");
-                var command = Commands
-                    .FirstOrDefault(x => string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
+                var command = Commands.FirstOrDefault(x =>
+                    string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
 
                 command?.Action(this, e.PrivateMessage.Source, string.Join(" ", split.Skip(1)));
             }
             else
             {
-                //using (var db = new HadoukenContext())
-                //{
-                //    db.Messages.Add(new Message
-                //    {
-                //        Content = content,
-                //        Nick = nick,
-                //        Created = DateTime.UtcNow
-                //    });
+                _messageRepository.Create(new Message
+                {
+                    Content = content,
+                    Nick = nick,
+                    Created = DateTime.UtcNow
+                });
+            }
+        }
 
-                //    db.SaveChanges();
-                //}
+        private void UserKicked(object sender, KickEventArgs e)
+        {
+            if (Configuration.Flags.RejoinOnKick)
+            {
+                if (e.Kicked.Nick == Configuration.Identity.Nick)
+                {
+                    Client.JoinChannel(e.Channel.Name);
+                }
+            }
+        }
+
+        private void UserJoinedChannel(object sender, ChannelUserEventArgs e)
+        { }
+
+        public void UserPartedChannel(object sender, ChannelUserEventArgs e)
+        {
+            if (e.User.Nick == Configuration.Identity.Nick)
+            {
+                Client.JoinChannel(e.Channel.Name);
             }
         }
     }
