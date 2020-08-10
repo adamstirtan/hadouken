@@ -8,7 +8,7 @@ namespace Hadouken.Commands
 
         public void Action(IBot bot, string channel, string args)
         {
-            bot.Client.SendMessage($"{args.ToUpper()}!!", channel);
+            bot.SendMessage($"{args.ToUpper()}!!", channel);
         }
     }
 }

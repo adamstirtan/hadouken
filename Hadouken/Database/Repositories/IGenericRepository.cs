@@ -11,7 +11,7 @@ namespace Hadouken.Database.Repositories
     {
         IQueryable<T> All();
 
-        IEnumerable<T> Where(Func<T, bool> query);
+        IEnumerable<T> Where(Func<T, bool> query, Func<T, bool> orderBy = null);
 
         T GetById(long id);
 

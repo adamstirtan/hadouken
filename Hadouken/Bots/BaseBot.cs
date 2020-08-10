@@ -10,8 +10,8 @@ using ChatSharp.Events;
 
 using Hadouken.Commands;
 using Hadouken.Configuration;
-using Hadouken.Database.Repositories;
 using Hadouken.Database;
+using Hadouken.Services;
 
 namespace Hadouken.Bots
 {
@@ -19,17 +19,18 @@ namespace Hadouken.Bots
     {
         private readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
-        private readonly IMessageRepository _messageRepository;
+        private readonly IMessageService _messageService;
+        private readonly IrcClient _client;
 
         protected BaseBot(
             IOptions<BotConfiguration> options,
-            IMessageRepository messageRepository)
+            IMessageService messageService)
         {
             Configuration = options.Value;
 
-            _messageRepository = messageRepository;
+            _messageService = messageService;
 
-            Client = new IrcClient(
+            _client = new IrcClient(
                 $"{Configuration.IrcServer.ServerName}:{Configuration.IrcServer.ServerPort}", new IrcUser(
                     Configuration.Identity.Nick,
                     Configuration.Identity.UserName,
@@ -45,14 +46,15 @@ namespace Hadouken.Bots
             Console.CancelKeyPress += (sender, args) =>
             {
                 args.Cancel = true;
+
                 QuitEvent.Set();
             };
 
-            Client.ConnectionComplete += ConnectionComplete;
-            Client.ChannelMessageRecieved += ChannelMessageReceived;
-            Client.UserKicked += UserKicked;
-            Client.UserJoinedChannel += UserJoinedChannel;
-            Client.UserPartedChannel += UserPartedChannel;
+            _client.ConnectionComplete += ConnectionComplete;
+            _client.ChannelMessageRecieved += ChannelMessageReceived;
+            _client.UserKicked += UserKicked;
+            _client.UserJoinedChannel += UserJoinedChannel;
+            _client.UserPartedChannel += UserPartedChannel;
         }
 
         public IrcClient Client { get; }
@@ -63,19 +65,24 @@ namespace Hadouken.Bots
 
         public void Run()
         {
-            Client.ConnectAsync();
+            _client.ConnectAsync();
 
             QuitEvent.WaitOne();
+        }
+
+        public void SendMessage(string message, string channel)
+        {
+            _client.SendMessage(message, channel);
         }
 
         public void ConnectionComplete(object sender, EventArgs e)
         {
             foreach (var channel in Configuration.IrcServer.AutoJoinChannels)
             {
-                Client.JoinChannel(channel);
+                _client.JoinChannel(channel);
             }
 
-            Client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
+            _client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
         }
 
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
@@ -98,7 +105,7 @@ namespace Hadouken.Bots
             }
             else
             {
-                _messageRepository.Create(new Message
+                _messageService.AddMessage(new Message
                 {
                     Content = content,
                     Nick = nick,
@@ -113,7 +120,7 @@ namespace Hadouken.Bots
             {
                 if (e.Kicked.Nick == Configuration.Identity.Nick)
                 {
-                    Client.JoinChannel(e.Channel.Name);
+                    _client.JoinChannel(e.Channel.Name);
                 }
             }
         }
@@ -125,7 +132,7 @@ namespace Hadouken.Bots
         {
             if (e.User.Nick == Configuration.Identity.Nick)
             {
-                Client.JoinChannel(e.Channel.Name);
+                _client.JoinChannel(e.Channel.Name);
             }
         }
     }

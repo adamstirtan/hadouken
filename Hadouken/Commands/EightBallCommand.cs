@@ -51,7 +51,7 @@ namespace Hadouken.Commands
 
         public void Action(IBot bot, string channel, string args)
         {
-            bot.Client.SendMessage(Responses[Random.Next(Responses.Length)], channel);
+            bot.SendMessage(Responses[Random.Next(Responses.Length)], channel);
         }
     }
 }

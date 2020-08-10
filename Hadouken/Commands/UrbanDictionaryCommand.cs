@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 using Hadouken.Bots;
-using Hadouken.Common;
 
 namespace Hadouken.Commands
 {
@@ -18,7 +16,7 @@ namespace Hadouken.Commands
         {
             if (string.IsNullOrEmpty(args))
             {
-                bot.Client.SendMessage($"Usage: {Trigger} <search>", channel);
+                bot.SendMessage($"Usage: {Trigger} <search>", channel);
             }
             else
             {
@@ -31,15 +29,14 @@ namespace Hadouken.Commands
                     client.DefaultRequestHeaders.Add("User-Agent", "Hadouken IRC Bot");
 
                     Task<string> task = Task.Run(async () =>
-                        await client.GetStringAsync(
-                            $"http://api.urbandictionary.com/v0/define?term={args}"));
+                        await client.GetStringAsync($"http://api.urbandictionary.com/v0/define?term={args}"));
 
                     result = task.Result;
                 }
 
                 if (string.IsNullOrEmpty(result))
                 {
-                    bot.Client.SendMessage($"Nothing found for {args}", channel);
+                    bot.SendMessage($"Nothing found for {args}", channel);
                 }
                 else
                 {
@@ -51,16 +48,16 @@ namespace Hadouken.Commands
                     {
                         try
                         {
-                            bot.Client.SendMessage($"{args}: {json.list[0].definition}", channel);
+                            bot.SendMessage($"{args}: {json.list[0].definition}", channel);
                         }
                         catch
                         {
-                            bot.Client.SendMessage("There's something fucky in that definition that can't be displayed here", channel);
+                            bot.SendMessage("There's something fucky in that definition that can't be displayed here", channel);
                         }
                     }
                     else
                     {
-                        bot.Client.SendMessage($"Nothing found for {args}", channel);
+                        bot.SendMessage($"Nothing found for {args}", channel);
                     }
                 }
             }

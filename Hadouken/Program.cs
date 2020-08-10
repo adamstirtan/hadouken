@@ -6,6 +6,8 @@ using Hadouken.Bots;
 using Hadouken.Configuration;
 using Hadouken.Database;
 using Hadouken.Database.Repositories;
+using Hadouken.Services;
+using Hadouken.Commands;
 
 namespace Hadouken
 {
@@ -47,6 +49,11 @@ namespace Hadouken
 
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IQuoteRepository, QuoteRepository>();
+
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IQuoteService, QuoteService>();
+
+            services.AddScoped<AolSayCommand>();
 
             services.AddTransient<HadoukenBot>();
 

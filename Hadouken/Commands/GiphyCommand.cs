@@ -18,7 +18,7 @@ namespace Hadouken.Commands
         {
             if (string.IsNullOrEmpty(args))
             {
-                bot.Client.SendMessage($"Usage: {Trigger} <search>", channel);
+                bot.SendMessage($"Usage: {Trigger} <search>", channel);
             }
             else
             {
@@ -33,11 +33,11 @@ namespace Hadouken.Commands
 
                 if (task.Result?.Data[0] != null)
                 {
-                    bot.Client.SendMessage(task.Result.Data[0].EmbedUrl, channel);
+                    bot.SendMessage(task.Result.Data[0].EmbedUrl, channel);
                 }
                 else
                 {
-                    bot.Client.SendMessage($"Nothing found for {args}", channel);
+                    bot.SendMessage($"Nothing found for {args}", channel);
                 }
             }
         }

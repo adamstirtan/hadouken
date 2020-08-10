@@ -15,7 +15,7 @@ namespace Hadouken.Commands
         {
             var aolSay = new AolSay();
 
-            bot.Client.SendMessage(aolSay.Responses[Random.Next(aolSay.Responses.Length)], channel);
+            bot.SendMessage(aolSay.Responses[Random.Next(aolSay.Responses.Length)], channel);
         }
     }
 }

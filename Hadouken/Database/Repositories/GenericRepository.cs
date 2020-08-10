@@ -3,34 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace Hadouken.Database.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-        protected readonly DbContext Context;
+        protected readonly HadoukenContext Context;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(HadoukenContext context)
         {
             Context = context;
         }
 
         public virtual IQueryable<T> All()
         {
-            return Context.Set<T>();
+            try
+            {
+                return Context.Set<T>();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public virtual IEnumerable<T> Where(Func<T, bool> query)
+        public virtual IEnumerable<T> Where(Func<T, bool> query, Func<T, bool> orderBy = null)
         {
-            return Context.Set<T>()
-                .Where(query);
+            var result = Context.Set<T>().Where(query);
+
+            if (orderBy != null)
+            {
+                result = result.OrderBy(orderBy);
+            }
+
+            return result;
         }
 
         public virtual T GetById(long id)
         {
-            return Context.Set<T>()
-                .FirstOrDefault(x => x.Id == id);
+            return Context.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 
         public virtual T Create(T entity)
@@ -44,6 +54,7 @@ namespace Hadouken.Database.Repositories
         public virtual bool Update(long id, T entity)
         {
             Context.Set<T>().Update(entity);
+
             return Context.SaveChanges() > 0;
         }
 
@@ -74,6 +85,7 @@ namespace Hadouken.Database.Repositories
         public virtual bool Delete(T entity)
         {
             Context.Set<T>().Remove(entity);
+
             return Context.SaveChanges() > 0;
         }
     }

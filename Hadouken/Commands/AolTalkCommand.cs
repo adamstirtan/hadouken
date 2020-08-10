@@ -15,7 +15,7 @@ namespace Hadouken.Commands
         {
             if (!string.IsNullOrEmpty(args))
             {
-                bot.Client.SendMessage($"Usage: {Trigger}", channel);
+                bot.SendMessage($"Usage: {Trigger}", channel);
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace Hadouken.Commands
 
             var result = string.Join(" ", chain.Chain(new Random(DateTime.UtcNow.Millisecond)));
 
-            bot.Client.SendMessage(result, channel);
+            bot.SendMessage(result, channel);
         }
     }
 }
