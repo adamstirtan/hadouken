@@ -30,6 +30,7 @@ namespace Hadouken.Services
 
         public Quote Search(string criteria)
         {
+            return null;
             //return _quoteRepository
             //    .Where(x => string.Contains(criteria, StringComparison.InvariantCultureIgnoreCase))
             //    .FirstOrDefault();

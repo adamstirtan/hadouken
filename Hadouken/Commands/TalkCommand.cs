@@ -9,7 +9,7 @@ using Hadouken.Services;
 
 namespace Hadouken.Commands
 {
-    public sealed class TalkCommand : ICommand
+    public sealed class TalkCommand : ITalkCommand
     {
         private readonly IMessageService _messageService;
 

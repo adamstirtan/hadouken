@@ -8,20 +8,21 @@ namespace Hadouken.Bots
 {
     public class HadoukenBot : BaseBot
     {
-        private static IMessageService messageRepository;
-
         public HadoukenBot(
             IOptions<BotConfiguration> options,
-            IMessageService messageService)
+            IMessageService messageService,
+            ITalkCommand talkCommand,
+            IYellBarfCommand yellBarfCommand,
+            IQuoteCommand quoteCommand)
             : base(options, messageService)
         {
             Commands.Add(new EchoCommand());
             Commands.Add(new EightBallCommand());
-            Commands.Add(new YellBarfCommand());
-            Commands.Add(new QuoteCommand());
+            Commands.Add(yellBarfCommand);
+            Commands.Add(quoteCommand);
             Commands.Add(new AolSayCommand());
             Commands.Add(new GiphyCommand());
-            Commands.Add(new TalkCommand());
+            Commands.Add(talkCommand);
             Commands.Add(new AolTalkCommand());
             Commands.Add(new UrbanDictionaryCommand());
         }

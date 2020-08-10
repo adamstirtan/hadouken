@@ -2,7 +2,7 @@
 
 namespace Hadouken.Commands
 {
-    public sealed class YellBarfCommand : ICommand
+    public sealed class YellBarfCommand : IYellBarfCommand
     {
         public string Trigger => "!yellbarf";
 

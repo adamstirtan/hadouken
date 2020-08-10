@@ -7,7 +7,7 @@ using Hadouken.Services;
 
 namespace Hadouken.Commands
 {
-    public class QuoteCommand : ICommand
+    public class QuoteCommand : IQuoteCommand
     {
         public string Trigger => "!quote";
 

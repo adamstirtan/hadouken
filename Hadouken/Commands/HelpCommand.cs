@@ -4,7 +4,7 @@ using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {
-    public sealed class HelpCommand : ICommand
+    public sealed class HelpCommand : IHelpCommand
     {
         public string Trigger => "!help";
 
