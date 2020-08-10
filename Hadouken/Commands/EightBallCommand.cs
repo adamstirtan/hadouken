@@ -4,7 +4,7 @@ using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {
-    public sealed class EightBallCommand : ICommand
+    public sealed class EightBallCommand : IEightBallCommand
     {
         private static readonly Random Random = new Random();
 
@@ -16,7 +16,7 @@ namespace Hadouken.Commands
             "Yes - definitely.",
             "You may rely on it.",
             "As I see it, yes.",
-            "Most likely",
+            "Most likely.",
             "Outlook good.",
             "Yes",
             "Signs point to yes.",

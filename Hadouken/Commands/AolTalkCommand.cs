@@ -7,7 +7,7 @@ using Hadouken.Common;
 
 namespace Hadouken.Commands
 {
-    public sealed class AolTalkCommand : ICommand
+    public sealed class AolTalkCommand : IAolTalkCommand
     {
         public string Trigger => "!aoltalk";
 

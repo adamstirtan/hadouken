@@ -11,20 +11,24 @@ namespace Hadouken.Bots
         public HadoukenBot(
             IOptions<BotConfiguration> options,
             IMessageService messageService,
+            IAolSayCommand aolSayCommand,
+            IAolTalkCommand aolTalkCommand,
+            IEightBallCommand eightBallCommand,
+            IGiphyCommand giphyCommand,
             ITalkCommand talkCommand,
+            IUrbanDictionaryCommand urbanDictionaryCommand,
             IYellBarfCommand yellBarfCommand,
             IQuoteCommand quoteCommand)
             : base(options, messageService)
         {
-            Commands.Add(new EchoCommand());
-            Commands.Add(new EightBallCommand());
-            Commands.Add(yellBarfCommand);
+            Commands.Add(aolSayCommand);
+            Commands.Add(aolTalkCommand);
+            Commands.Add(eightBallCommand);
+            Commands.Add(giphyCommand);
             Commands.Add(quoteCommand);
-            Commands.Add(new AolSayCommand());
-            Commands.Add(new GiphyCommand());
             Commands.Add(talkCommand);
-            Commands.Add(new AolTalkCommand());
-            Commands.Add(new UrbanDictionaryCommand());
+            Commands.Add(urbanDictionaryCommand);
+            Commands.Add(yellBarfCommand);
         }
     }
 }

@@ -54,8 +54,13 @@ namespace Hadouken
             services.AddTransient<IQuoteService, QuoteService>();
 
             services.AddScoped<IHelpCommand, HelpCommand>();
+            services.AddScoped<IAolSayCommand, AolSayCommand>();
+            services.AddScoped<IAolTalkCommand, AolTalkCommand>();
+            services.AddScoped<IEightBallCommand, EightBallCommand>();
+            services.AddScoped<IGiphyCommand, GiphyCommand>();
             services.AddScoped<IQuoteCommand, QuoteCommand>();
             services.AddScoped<ITalkCommand, TalkCommand>();
+            services.AddScoped<IUrbanDictionaryCommand, UrbanDictionaryCommand>();
             services.AddScoped<IYellBarfCommand, YellBarfCommand>();
 
             services.AddTransient<HadoukenBot>();

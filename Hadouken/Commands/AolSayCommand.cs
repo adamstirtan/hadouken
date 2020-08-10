@@ -5,7 +5,7 @@ using Hadouken.Common;
 
 namespace Hadouken.Commands
 {
-    public class AolSayCommand : ICommand
+    public class AolSayCommand : IAolSayCommand
     {
         private static readonly Random Random = new Random();
 

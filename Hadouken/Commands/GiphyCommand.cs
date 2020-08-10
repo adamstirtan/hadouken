@@ -8,7 +8,7 @@ using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {
-    public sealed class GiphyCommand : ICommand
+    public sealed class GiphyCommand : IGiphyCommand
     {
         private static readonly string ApiKey = "FwFiSEZx7ZGnx8VobX6VOq6Y4oKXMbDA";
 

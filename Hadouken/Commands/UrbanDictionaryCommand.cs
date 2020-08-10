@@ -8,7 +8,7 @@ using Hadouken.Bots;
 
 namespace Hadouken.Commands
 {
-    public class UrbanDictionaryCommand : ICommand
+    public class UrbanDictionaryCommand : IUrbanDictionaryCommand
     {
         public string Trigger => "!ud";
 
