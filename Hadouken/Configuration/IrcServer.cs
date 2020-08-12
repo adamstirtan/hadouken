@@ -8,6 +8,6 @@ namespace Hadouken.Configuration
 
         public bool UseSsl { get; set; }
 
-        public string[] AutoJoinChannels { get; set; }
+        public AutoJoinChannel[] AutoJoinChannels { get; set; }
     }
 }

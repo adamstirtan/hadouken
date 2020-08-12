@@ -79,7 +79,14 @@ namespace Hadouken.Bots
         {
             foreach (var channel in Configuration.IrcServer.AutoJoinChannels)
             {
-                _client.JoinChannel(channel);
+                if (channel.Password == null)
+                {
+                    _client.JoinChannel($"{channel.Name}");
+                }
+                else
+                {
+                    _client.JoinChannel($"{channel.Name} {channel.Password}");
+                }
             }
 
             _client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
