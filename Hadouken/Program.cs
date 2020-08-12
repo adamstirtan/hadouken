@@ -29,14 +29,18 @@ namespace Hadouken
 
             try
             {
-                using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                using var scope = serviceProvider
+                    .GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope();
 
-                scope.ServiceProvider.GetService<HadoukenContext>().Database.Migrate();
+                scope.ServiceProvider
+                    .GetRequiredService<HadoukenContext>()
+                    .Database
+                    .Migrate();
             }
             catch (SqlException)
             {
                 Console.WriteLine("Unable to connect to the database in appsettings.json");
-
                 Environment.Exit(-1);
             }
 
