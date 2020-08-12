@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+using Hadouken.ObjectModel;
+
 namespace Hadouken.Database
 {
     public sealed class HadoukenContext : DbContext

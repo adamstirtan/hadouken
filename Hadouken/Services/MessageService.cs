@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Hadouken.Database;
 using Hadouken.Database.Repositories;
+using Hadouken.ObjectModel;
 
 namespace Hadouken.Services
 {

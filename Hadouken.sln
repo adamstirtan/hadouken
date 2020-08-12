@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken", "Hadouken\Hadouken.csproj", "{96470469-2C21-450D-9891-328F09229C85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken", "Hadouken\Hadouken.csproj", "{96470469-2C21-450D-9891-328F09229C85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.ObjectModel", "Hadouken.ObjectModel\Hadouken.ObjectModel.csproj", "{3BA550E4-3060-4E82-94ED-D0C2B45B73FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{96470469-2C21-450D-9891-328F09229C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96470469-2C21-450D-9891-328F09229C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96470469-2C21-450D-9891-328F09229C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BA550E4-3060-4E82-94ED-D0C2B45B73FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA550E4-3060-4E82-94ED-D0C2B45B73FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA550E4-3060-4E82-94ED-D0C2B45B73FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA550E4-3060-4E82-94ED-D0C2B45B73FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

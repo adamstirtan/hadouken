@@ -1,3 +1,5 @@
+using Hadouken.ObjectModel;
+
 namespace Hadouken.Database.Repositories
 {
     public sealed class QuoteRepository : GenericRepository<Quote>, IQuoteRepository

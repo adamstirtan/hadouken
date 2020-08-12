@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Hadouken.Database;
+using Hadouken.ObjectModel;
 
 namespace Hadouken.Database.Repositories
 {

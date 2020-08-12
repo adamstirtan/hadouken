@@ -1,4 +1,4 @@
-﻿using Hadouken.Database;
+﻿using Hadouken.ObjectModel;
 
 namespace Hadouken.Services
 {

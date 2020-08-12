@@ -10,7 +10,7 @@ using ChatSharp.Events;
 
 using Hadouken.Commands;
 using Hadouken.Configuration;
-using Hadouken.Database;
+using Hadouken.ObjectModel;
 using Hadouken.Services;
 
 namespace Hadouken.Bots

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using Hadouken.ObjectModel;
+
 namespace Hadouken.Database.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity

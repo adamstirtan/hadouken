@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 
-using Hadouken.Database;
 using Hadouken.Database.Repositories;
+using Hadouken.ObjectModel;
 
 namespace Hadouken.Services
 {

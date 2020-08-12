@@ -1,4 +1,6 @@
-﻿namespace Hadouken.Database.Repositories
+﻿using Hadouken.ObjectModel;
+
+namespace Hadouken.Database.Repositories
 {
     public interface IMessageRepository : IGenericRepository<Message>
     { }

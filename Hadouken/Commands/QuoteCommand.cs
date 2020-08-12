@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 
 using Hadouken.Bots;
-using Hadouken.Database;
+using Hadouken.ObjectModel;
 using Hadouken.Services;
 
 namespace Hadouken.Commands

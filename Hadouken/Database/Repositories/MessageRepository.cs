@@ -1,4 +1,6 @@
-﻿namespace Hadouken.Database.Repositories
+﻿using Hadouken.ObjectModel;
+
+namespace Hadouken.Database.Repositories
 {
     public sealed class MessageRepository : GenericRepository<Message>, IMessageRepository
     {
