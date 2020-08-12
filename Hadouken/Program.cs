@@ -1,13 +1,16 @@
+using System;
+
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Hadouken.Bots;
+using Hadouken.Commands;
 using Hadouken.Configuration;
 using Hadouken.Database;
 using Hadouken.Database.Repositories;
 using Hadouken.Services;
-using Hadouken.Commands;
 
 namespace Hadouken
 {
@@ -24,15 +27,24 @@ namespace Hadouken
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            //using (var context = serviceProvider.GetService<HadoukenContext>())
-            //{
-            //    context.Database.Migrate();
-            //}
+            try
+            {
+                using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+                scope.ServiceProvider.GetService<HadoukenContext>().Database.Migrate();
+            }
+            catch (SqlException)
+            {
+                Console.WriteLine("Unable to connect to the database in appsettings.json");
+
+                Environment.Exit(-1);
+            }
 
             serviceProvider
                 .GetRequiredService<HadoukenBot>()
                 .Run();
         }
+
 
         private static IServiceCollection ConfigureServices()
         {
