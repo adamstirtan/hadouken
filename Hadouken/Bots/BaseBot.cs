@@ -94,17 +94,17 @@ namespace Hadouken.Bots
 
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
         {
-            var content = e.PrivateMessage.Message;
+            var message = e.PrivateMessage.Message;
             var nick = e.PrivateMessage.User.Nick;
 
             if (Configuration.Flags.ConsoleLogging)
             {
-                Console.WriteLine($"<{nick}>: {content}");
+                Console.WriteLine($"<{nick}>: {message}");
             }
 
-            if (content.StartsWith("!"))
+            if (message.StartsWith("!"))
             {
-                var split = content.Split(" ");
+                var split = message.Split(" ");
                 var command = Commands.FirstOrDefault(x =>
                     string.Equals(x.Trigger, split[0], StringComparison.InvariantCultureIgnoreCase));
 
@@ -114,7 +114,7 @@ namespace Hadouken.Bots
             {
                 _messageService.AddMessage(new Message
                 {
-                    Content = content,
+                    Content = message,
                     Nick = nick,
                     Created = DateTime.UtcNow
                 });
