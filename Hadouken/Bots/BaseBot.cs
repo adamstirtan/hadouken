@@ -77,6 +77,11 @@ namespace Hadouken.Bots
 
         public void ConnectionComplete(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(Configuration.Identity.Password))
+            {
+                _client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
+            }
+
             foreach (var channel in Configuration.IrcServer.AutoJoinChannels)
             {
                 if (channel.Password == null)
@@ -88,8 +93,6 @@ namespace Hadouken.Bots
                     _client.JoinChannel($"{channel.Name} {channel.Password}");
                 }
             }
-
-            _client.SendMessage($"identify {Configuration.Identity.Password}", "nickserv");
         }
 
         public void ChannelMessageReceived(object sender, PrivateMessageEventArgs e)
@@ -112,12 +115,15 @@ namespace Hadouken.Bots
             }
             else
             {
-                _messageService.AddMessage(new Message
+                if (Configuration.Flags.InitializeDatabase)
                 {
-                    Content = message,
-                    Nick = nick,
-                    Created = DateTime.UtcNow
-                });
+                    _messageService.AddMessage(new Message
+                    {
+                        Content = message,
+                        Nick = nick,
+                        Created = DateTime.UtcNow
+                    });
+                }
             }
         }
 

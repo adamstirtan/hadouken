@@ -27,21 +27,28 @@ namespace Hadouken
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            try
-            {
-                using var scope = serviceProvider
-                    .GetRequiredService<IServiceScopeFactory>()
-                    .CreateScope();
+            var flags = Configuration
+                .GetSection("Bot")
+                .GetSection("Flags");
 
-                scope.ServiceProvider
-                    .GetRequiredService<HadoukenContext>()
-                    .Database
-                    .Migrate();
-            }
-            catch (SqlException)
+            if (flags.GetValue<bool>("InitializeDatabase"))
             {
-                Console.WriteLine("Unable to connect to the database in appsettings.json");
-                Environment.Exit(-1);
+                try
+                {
+                    using var scope = serviceProvider
+                        .GetRequiredService<IServiceScopeFactory>()
+                        .CreateScope();
+
+                    scope.ServiceProvider
+                        .GetRequiredService<HadoukenContext>()
+                        .Database
+                        .Migrate();
+                }
+                catch (SqlException)
+                {
+                    Console.WriteLine("Unable to connect to the database in appsettings.json");
+                    Environment.Exit(-1);
+                }
             }
 
             serviceProvider
