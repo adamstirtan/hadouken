@@ -1,7 +1,11 @@
 ﻿using System.Threading.Tasks;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Hadouken.Database;
+using Hadouken.Bots;
 
 namespace Hadouken
 {
@@ -14,40 +18,33 @@ namespace Hadouken
 
         private static async Task MainAsync(string[] args)
         {
-            Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
+            //Configuration = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json", false, true)
+            //    .Build();
 
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            var flags = Configuration
-                .GetSection("Bot")
-                .GetSection("Flags");
+            //try
+            //{
+            //    using var scope = serviceProvider
+            //        .GetRequiredService<IServiceScopeFactory>()
+            //        .CreateScope();
 
-            if (flags.GetValue<bool>("InitializeDatabase"))
-            {
-                try
-                {
-                    using var scope = serviceProvider
-                        .GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope();
+            //    scope.ServiceProvider
+            //        .GetRequiredService<ApplicationDbContext>()
+            //        .Database
+            //        .Migrate();
+            //}
+            //catch (SqlException)
+            //{
+            //    Console.WriteLine("Unable to connect to the database in appsettings.json");
+            //    Environment.Exit(-1);
+            //}
 
-                    scope.ServiceProvider
-                        .GetRequiredService<ApplicationDbContext>()
-                        .Database
-                        .Migrate();
-                }
-                catch (SqlException)
-                {
-                    Console.WriteLine("Unable to connect to the database in appsettings.json");
-                    Environment.Exit(-1);
-                }
-            }
-
-            serviceProvider
-                .GetRequiredService<HadoukenBot>()
-                .Run();
+            await serviceProvider
+                .GetRequiredService<IBot>()
+                .StartAsync();
         }
 
         private static IServiceCollection ConfigureServices()
@@ -56,30 +53,30 @@ namespace Hadouken
 
             services.AddOptions();
 
-            services.AddDbContext<HadoukenContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("BotContext"));
+                options.UseSqlite(Configuration.GetConnectionString("HadoukenConnection"));
             });
 
-            services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
+            //services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
 
-            services.AddTransient<IMessageRepository, MessageRepository>();
-            services.AddTransient<IQuoteRepository, QuoteRepository>();
+            //services.AddTransient<IMessageRepository, MessageRepository>();
+            //services.AddTransient<IQuoteRepository, QuoteRepository>();
 
-            services.AddTransient<IMessageService, MessageService>();
-            services.AddTransient<IQuoteService, QuoteService>();
+            //services.AddTransient<IMessageService, MessageService>();
+            //services.AddTransient<IQuoteService, QuoteService>();
 
-            services.AddScoped<IHelpCommand, HelpCommand>();
-            services.AddScoped<IAolSayCommand, AolSayCommand>();
-            services.AddScoped<IAolTalkCommand, AolTalkCommand>();
-            services.AddScoped<IEightBallCommand, EightBallCommand>();
-            services.AddScoped<IGiphyCommand, GiphyCommand>();
-            services.AddScoped<IQuoteCommand, QuoteCommand>();
-            services.AddScoped<ITalkCommand, TalkCommand>();
-            services.AddScoped<IUrbanDictionaryCommand, UrbanDictionaryCommand>();
-            services.AddScoped<IYellBarfCommand, YellBarfCommand>();
+            //services.AddScoped<IHelpCommand, HelpCommand>();
+            //services.AddScoped<IAolSayCommand, AolSayCommand>();
+            //services.AddScoped<IAolTalkCommand, AolTalkCommand>();
+            //services.AddScoped<IEightBallCommand, EightBallCommand>();
+            //services.AddScoped<IGiphyCommand, GiphyCommand>();
+            //services.AddScoped<IQuoteCommand, QuoteCommand>();
+            //services.AddScoped<ITalkCommand, TalkCommand>();
+            //services.AddScoped<IUrbanDictionaryCommand, UrbanDictionaryCommand>();
+            //services.AddScoped<IYellBarfCommand, YellBarfCommand>();
 
-            services.AddTransient<HadoukenBot>();
+            //services.AddTransient<HadoukenBot>();
 
             return services;
         }
