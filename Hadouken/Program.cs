@@ -1,16 +1,7 @@
-using System;
+﻿using System.Threading.Tasks;
 
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Hadouken.Bots;
-using Hadouken.Commands;
-using Hadouken.Configuration;
-using Hadouken.Database;
-using Hadouken.Database.Repositories;
-using Hadouken.Services;
 
 namespace Hadouken
 {
@@ -18,7 +9,10 @@ namespace Hadouken
     {
         private static IConfiguration Configuration;
 
-        private static void Main()
+        private static void Main(string[] args) =>
+            MainAsync(args).GetAwaiter().GetResult();
+
+        private static async Task MainAsync(string[] args)
         {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
@@ -40,7 +34,7 @@ namespace Hadouken
                         .CreateScope();
 
                     scope.ServiceProvider
-                        .GetRequiredService<HadoukenContext>()
+                        .GetRequiredService<ApplicationDbContext>()
                         .Database
                         .Migrate();
                 }
@@ -55,7 +49,6 @@ namespace Hadouken
                 .GetRequiredService<HadoukenBot>()
                 .Run();
         }
-
 
         private static IServiceCollection ConfigureServices()
         {

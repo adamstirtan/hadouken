@@ -1,6 +1,6 @@
 namespace Hadouken.ObjectModel
 {
-    public class Quote : BaseEntity
+    public class Quote : EntityBase
     {
         public string Nick { get; set; }
 

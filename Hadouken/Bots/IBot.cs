@@ -1,18 +1,11 @@
-﻿using System.Collections.Generic;
-
-using Hadouken.Commands;
-using Hadouken.Configuration;
+﻿using System.Threading.Tasks;
 
 namespace Hadouken.Bots
 {
     public interface IBot
     {
-        BotConfiguration Configuration { get; }
+        Task StartAsync();
 
-        List<ICommand> Commands { get; set; }
-
-        void Run();
-
-        void SendMessage(string message, string channel);
+        Task StopAsync();
     }
 }

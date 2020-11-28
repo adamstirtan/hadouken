@@ -1,6 +1,6 @@
 namespace Hadouken.ObjectModel
 {
-    public class Message : BaseEntity
+    public class Message : EntityBase
     {
         public string Content { get; set; }
 
