@@ -1,11 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Hadouken.Database;
 using Hadouken.Bots;
+using Hadouken.Configuration;
+using Hadouken.Database;
 
 namespace Hadouken
 {
@@ -18,29 +21,29 @@ namespace Hadouken
 
         private static async Task MainAsync(string[] args)
         {
-            //Configuration = new ConfigurationBuilder()
-            //    .AddJsonFile("appsettings.json", false, true)
-            //    .Build();
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
 
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
-            //try
-            //{
-            //    using var scope = serviceProvider
-            //        .GetRequiredService<IServiceScopeFactory>()
-            //        .CreateScope();
+            try
+            {
+                using var scope = serviceProvider
+                    .GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope();
 
-            //    scope.ServiceProvider
-            //        .GetRequiredService<ApplicationDbContext>()
-            //        .Database
-            //        .Migrate();
-            //}
-            //catch (SqlException)
-            //{
-            //    Console.WriteLine("Unable to connect to the database in appsettings.json");
-            //    Environment.Exit(-1);
-            //}
+                scope.ServiceProvider
+                    .GetRequiredService<ApplicationDbContext>()
+                    .Database
+                    .Migrate();
+            }
+            catch (SqlException)
+            {
+                Console.WriteLine("Unable to connect to the database in appsettings.json");
+                Environment.Exit(-1);
+            }
 
             await serviceProvider
                 .GetRequiredService<IBot>()
@@ -58,25 +61,9 @@ namespace Hadouken
                 options.UseSqlite(Configuration.GetConnectionString("HadoukenConnection"));
             });
 
-            //services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
+            services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
 
-            //services.AddTransient<IMessageRepository, MessageRepository>();
-            //services.AddTransient<IQuoteRepository, QuoteRepository>();
-
-            //services.AddTransient<IMessageService, MessageService>();
-            //services.AddTransient<IQuoteService, QuoteService>();
-
-            //services.AddScoped<IHelpCommand, HelpCommand>();
-            //services.AddScoped<IAolSayCommand, AolSayCommand>();
-            //services.AddScoped<IAolTalkCommand, AolTalkCommand>();
-            //services.AddScoped<IEightBallCommand, EightBallCommand>();
-            //services.AddScoped<IGiphyCommand, GiphyCommand>();
-            //services.AddScoped<IQuoteCommand, QuoteCommand>();
-            //services.AddScoped<ITalkCommand, TalkCommand>();
-            //services.AddScoped<IUrbanDictionaryCommand, UrbanDictionaryCommand>();
-            //services.AddScoped<IYellBarfCommand, YellBarfCommand>();
-
-            //services.AddTransient<HadoukenBot>();
+            services.AddTransient<DiscordBot>();
 
             return services;
         }
