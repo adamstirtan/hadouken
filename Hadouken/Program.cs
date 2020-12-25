@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Serilog;
 
 using Hadouken.Bots;
 using Hadouken.Configuration;
@@ -22,14 +25,27 @@ namespace Hadouken
         private static async Task MainAsync(string[] args)
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json",
+                    optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
+                    optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
 
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
 
             try
             {
+                Log.Debug("Migrating database");
+
                 using var scope = serviceProvider
                     .GetRequiredService<IServiceScopeFactory>()
                     .CreateScope();
@@ -41,7 +57,8 @@ namespace Hadouken
             }
             catch (SqlException)
             {
-                Console.WriteLine("Unable to connect to the database in appsettings.json");
+                Log.Fatal("Unable to connect to the database in appsettings.json");
+
                 Environment.Exit(-1);
             }
 
@@ -63,7 +80,7 @@ namespace Hadouken
 
             services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
 
-            services.AddTransient<DiscordBot>();
+            services.AddScoped<IBot, DiscordBot>();
 
             return services;
         }
