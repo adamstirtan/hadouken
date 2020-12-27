@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Discord;
@@ -16,6 +17,7 @@ namespace Hadouken.Database
     public class DiscordBot : IBot
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DiscordBot> _logger;
         private readonly BotConfiguration _configuration;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
@@ -23,28 +25,32 @@ namespace Hadouken.Database
         public DiscordBot(
             IServiceProvider serviceProvider,
             IOptions<BotConfiguration> options,
-            DiscordSocketClient client,
-            CommandService commands)
+            ILogger<DiscordBot> logger)
         {
+            _serviceProvider = serviceProvider;
             _configuration = options.Value;
+            _logger = logger;
 
-            _client = client;
-            _commands = commands;
+            _client = new DiscordSocketClient();
+            _commands = new CommandService();
         }
 
         public async Task StartAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
 
-            await _commands.AddModulesAsync(Assembly.GetExecutingAssembly(), null);
+            await _commands.AddModulesAsync(Assembly.GetExecutingAssembly(), _serviceProvider);
 
             await _client.LoginAsync(TokenType.Bot, _configuration.Credentials.Token);
             await _client.StartAsync();
         }
 
-        public Task StopAsync()
+        public async Task StopAsync()
         {
-            throw new NotImplementedException();
+            if (_client != null)
+            {
+                await _client.StopAsync();
+            }
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)

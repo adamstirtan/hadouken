@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
@@ -26,10 +27,7 @@ namespace Hadouken
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json",
-                    optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-                    optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -39,14 +37,28 @@ namespace Hadouken
                 .WriteTo.Console()
                 .CreateLogger();
 
-            var services = ConfigureServices();
-            var serviceProvider = services.BuildServiceProvider();
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddOptions();
+
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                    {
+                        options.UseSqlite(Configuration.GetConnectionString("HadoukenConnection"));
+                    });
+
+                    services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
+
+                    services.AddTransient<IBot, DiscordBot>();
+                })
+                .UseSerilog()
+                .Build();
 
             try
             {
-                Log.Debug("Migrating database");
+                Log.Information("Migrating database");
 
-                using var scope = serviceProvider
+                using var scope = host.Services
                     .GetRequiredService<IServiceScopeFactory>()
                     .CreateScope();
 
@@ -62,27 +74,9 @@ namespace Hadouken
                 Environment.Exit(-1);
             }
 
-            await serviceProvider
+            await host.Services
                 .GetRequiredService<IBot>()
                 .StartAsync();
-        }
-
-        private static IServiceCollection ConfigureServices()
-        {
-            var services = new ServiceCollection();
-
-            services.AddOptions();
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlite(Configuration.GetConnectionString("HadoukenConnection"));
-            });
-
-            services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
-
-            services.AddScoped<IBot, DiscordBot>();
-
-            return services;
         }
     }
 }
