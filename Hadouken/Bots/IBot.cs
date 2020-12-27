@@ -4,7 +4,7 @@ namespace Hadouken.Bots
 {
     public interface IBot
     {
-        Task StartAsync();
+        Task RunAsync();
 
         Task StopAsync();
     }

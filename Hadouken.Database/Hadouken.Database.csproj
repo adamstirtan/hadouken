@@ -4,11 +4,16 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Hadouken.ObjectModel\Hadouken.ObjectModel.csproj" />
+    <ProjectReference Include="..\Hadouken.Shared\Hadouken.Shared.csproj" />
   </ItemGroup>
 </Project>

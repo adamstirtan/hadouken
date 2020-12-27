@@ -1,6 +1,6 @@
 namespace Hadouken.ObjectModel
 {
-    public abstract class EntityBase
+    public abstract class BaseEntity
     {
         public long Id { get; set; }
     }

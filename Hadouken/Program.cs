@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace Hadouken
                 .WriteTo.Console()
                 .CreateLogger();
 
-            var host = Host.CreateDefaultBuilder()
+            var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
                     services.AddOptions();
@@ -74,9 +75,25 @@ namespace Hadouken
                 Environment.Exit(-1);
             }
 
-            await host.Services
-                .GetRequiredService<IBot>()
-                .StartAsync();
+            var exitEvent = new ManualResetEvent(false);
+
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                Log.Information("Stopping bot");
+
+                e.Cancel = true;
+                exitEvent.Set();
+            };
+
+            var bot = host.Services.GetRequiredService<IBot>();
+
+            await bot.RunAsync();
+
+            exitEvent.WaitOne();
+
+            await bot.StopAsync();
+
+            Environment.Exit(0);
         }
     }
 }

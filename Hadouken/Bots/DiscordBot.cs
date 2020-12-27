@@ -35,7 +35,7 @@ namespace Hadouken.Database
             _commands = new CommandService();
         }
 
-        public async Task StartAsync()
+        public async Task RunAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
 
@@ -47,7 +47,7 @@ namespace Hadouken.Database
 
         public async Task StopAsync()
         {
-            if (_client != null)
+            if (_client is not null)
             {
                 await _client.StopAsync();
             }
