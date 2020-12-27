@@ -71,7 +71,6 @@ namespace Hadouken
             catch (SqlException)
             {
                 Log.Fatal("Unable to connect to the database in appsettings.json");
-
                 Environment.Exit(-1);
             }
 
@@ -88,9 +87,7 @@ namespace Hadouken
             var bot = host.Services.GetRequiredService<IBot>();
 
             await bot.RunAsync();
-
             exitEvent.WaitOne();
-
             await bot.StopAsync();
 
             Environment.Exit(0);
