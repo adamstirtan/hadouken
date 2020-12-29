@@ -42,12 +42,20 @@ namespace Hadouken.Database
 
         public async Task RunAsync()
         {
-            _client.MessageReceived += HandleCommandAsync;
+            _client.MessageReceived += HandleMessageReceivedAsync;
+            _client.MessageDeleted += HandleMessageDeletedAsync;
+            _client.Disconnected += HandleDisconnectedAsync;
 
             await _commands.AddModulesAsync(Assembly.GetExecutingAssembly(), _serviceProvider);
 
-            await _client.LoginAsync(TokenType.Bot, _configuration.Credentials.Token);
-            await _client.StartAsync();
+            await ConnectAsync();
+        }
+
+        private async Task HandleDisconnectedAsync(Exception arg)
+        {
+            _logger.LogError(arg.Message);
+
+            await ConnectAsync();
         }
 
         public async Task StopAsync()
@@ -58,7 +66,13 @@ namespace Hadouken.Database
             }
         }
 
-        private async Task HandleCommandAsync(SocketMessage arg)
+        private async Task ConnectAsync()
+        {
+            await _client.LoginAsync(TokenType.Bot, _configuration.Credentials.Token);
+            await _client.StartAsync();
+        }
+
+        private async Task HandleMessageReceivedAsync(SocketMessage arg)
         {
             if (arg is not SocketUserMessage message)
             {
@@ -85,6 +99,11 @@ namespace Hadouken.Database
                     Timestamp = message.CreatedAt.UtcDateTime
                 });
             }
+        }
+
+        private async Task HandleMessageDeletedAsync(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
+        {
+            await channel.SendMessageAsync("I saw that.");
         }
     }
 }
