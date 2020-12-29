@@ -21,10 +21,7 @@ namespace Hadouken
     {
         private static IConfiguration Configuration;
 
-        private static void Main(string[] args) =>
-            MainAsync(args).GetAwaiter().GetResult();
-
-        private static async Task MainAsync(string[] args)
+        private static async Task Main(string[] args)
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -84,11 +81,16 @@ namespace Hadouken
                 exitEvent.Set();
             };
 
-            var bot = host.Services.GetRequiredService<IBot>();
+            using (var scope = host.Services
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                var bot = scope.ServiceProvider.GetRequiredService<IBot>();
 
-            await bot.RunAsync();
-            exitEvent.WaitOne();
-            await bot.StopAsync();
+                await bot.RunAsync();
+                exitEvent.WaitOne();
+                await bot.StopAsync();
+            }
 
             Environment.Exit(0);
         }
