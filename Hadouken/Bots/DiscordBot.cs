@@ -11,6 +11,8 @@ using Discord.WebSocket;
 
 using Hadouken.Bots;
 using Hadouken.Configuration;
+using Hadouken.Database.Services;
+using Hadouken.ObjectModel;
 
 namespace Hadouken.Database
 {
@@ -18,6 +20,7 @@ namespace Hadouken.Database
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<DiscordBot> _logger;
+        private readonly IMessageService _messageService;
         private readonly BotConfiguration _configuration;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
@@ -25,11 +28,13 @@ namespace Hadouken.Database
         public DiscordBot(
             IServiceProvider serviceProvider,
             IOptions<BotConfiguration> options,
-            ILogger<DiscordBot> logger)
+            ILogger<DiscordBot> logger,
+            IMessageService messageService)
         {
             _serviceProvider = serviceProvider;
             _configuration = options.Value;
             _logger = logger;
+            _messageService = messageService;
 
             _client = new DiscordSocketClient();
             _commands = new CommandService();
@@ -70,6 +75,15 @@ namespace Hadouken.Database
             if (message.HasCharPrefix('!', ref position))
             {
                 await _commands.ExecuteAsync(new SocketCommandContext(_client, message), position, null);
+            }
+            else
+            {
+                _ = await _messageService.CreateAsync(new Message
+                {
+                    Content = message.Content,
+                    UserName = message.Author.Username,
+                    Timestamp = message.CreatedAt.UtcDateTime
+                });
             }
         }
     }

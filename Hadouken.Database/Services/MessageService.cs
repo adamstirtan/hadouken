@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hadouken.ObjectModel;
 
 namespace Hadouken.Database.Services
 {
-    class MessageService
+    public class MessageService : BaseService<Message>, IMessageService
     {
+        public MessageService(ApplicationDbContext context)
+            : base(context)
+        { }
     }
 }

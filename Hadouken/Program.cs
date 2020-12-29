@@ -14,6 +14,7 @@ using Serilog;
 using Hadouken.Bots;
 using Hadouken.Configuration;
 using Hadouken.Database;
+using Hadouken.Database.Services;
 
 namespace Hadouken
 {
@@ -46,6 +47,8 @@ namespace Hadouken
                     });
 
                     services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
+
+                    services.AddScoped<IMessageService, MessageService>();
 
                     services.AddTransient<IBot, DiscordBot>();
                 })
