@@ -263,3 +263,4 @@ __pycache__/
 /Hadouken/bot.db
 .vscode/launch.json
 .vscode/tasks.json
+Hadouken/hadouken.db
