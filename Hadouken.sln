@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Database", "Hadouk
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken", "Hadouken\Hadouken.csproj", "{25F0B529-14BF-47AA-8FB1-721DA84E8E8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.Shared", "Hadouken.Shared\Hadouken.Shared.csproj", "{5AD5E759-1034-4836-8937-21D5096FD5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Shared", "Hadouken.Shared\Hadouken.Shared.csproj", "{5AD5E759-1034-4836-8937-21D5096FD5E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.Api", "Hadouken.Api\Hadouken.Api.csproj", "{2A66B4AF-4456-4023-A470-F99C0A78B1FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Api", "Hadouken.Api\Hadouken.Api.csproj", "{2A66B4AF-4456-4023-A470-F99C0A78B1FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.Dto", "Hadouken.Dto\Hadouken.Dto.csproj", "{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2A66B4AF-4456-4023-A470-F99C0A78B1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A66B4AF-4456-4023-A470-F99C0A78B1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A66B4AF-4456-4023-A470-F99C0A78B1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
