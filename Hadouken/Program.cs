@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Hadouken
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables()
+                .AddUserSecrets(Assembly.GetExecutingAssembly())
                 .Build();
 
             Log.Logger = new LoggerConfiguration()

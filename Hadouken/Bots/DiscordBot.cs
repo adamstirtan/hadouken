@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,9 @@ using Microsoft.Extensions.Options;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+
+using Quartz;
+using Quartz.Impl;
 
 using Hadouken.Bots;
 using Hadouken.Configuration;
@@ -24,6 +28,8 @@ namespace Hadouken.Database
         private readonly BotConfiguration _configuration;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
+
+        private IScheduler _scheduler;
 
         public DiscordBot(
             IServiceProvider serviceProvider,
@@ -51,13 +57,6 @@ namespace Hadouken.Database
             await ConnectAsync();
         }
 
-        private async Task HandleDisconnectedAsync(Exception arg)
-        {
-            _logger.LogError(arg.Message);
-
-            await ConnectAsync();
-        }
-
         public async Task StopAsync()
         {
             if (_client is not null)
@@ -70,6 +69,14 @@ namespace Hadouken.Database
         {
             await _client.LoginAsync(TokenType.Bot, _configuration.Credentials.Token);
             await _client.StartAsync();
+            await ScheduleTasksAsync();
+        }
+
+        private async Task ScheduleTasksAsync()
+        {
+            var factory = new StdSchedulerFactory();
+
+            _scheduler = await factory.GetScheduler();
         }
 
         private async Task HandleMessageReceivedAsync(SocketMessage arg)
@@ -99,6 +106,18 @@ namespace Hadouken.Database
                     Timestamp = message.CreatedAt.UtcDateTime
                 });
             }
+        }
+
+        private async Task HandleDisconnectedAsync(Exception arg)
+        {
+            _logger.LogError(arg.Message);
+
+            if (_scheduler is not null && !_scheduler.IsShutdown)
+            {
+                await _scheduler.Shutdown();
+            }
+
+            await ConnectAsync();
         }
 
         private async Task HandleMessageDeletedAsync(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
