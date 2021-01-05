@@ -99,12 +99,14 @@ namespace Hadouken.Database
             }
             else
             {
-                _ = await _messageService.CreateAsync(new Message
+                var entity = await _messageService.CreateAsync(new Message
                 {
                     Content = message.Content,
                     UserName = message.Author.Username,
                     Timestamp = message.CreatedAt.UtcDateTime
                 });
+
+                _logger.LogInformation($"{entity.UserName}: {entity.Content}");
             }
         }
 
