@@ -33,8 +33,6 @@ namespace Hadouken
 
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
                 .CreateLogger();
 
             var host = Host.CreateDefaultBuilder(args)
