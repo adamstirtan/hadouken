@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Shared", "Hadouken
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Api", "Hadouken.Api\Hadouken.Api.csproj", "{2A66B4AF-4456-4023-A470-F99C0A78B1FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.Dto", "Hadouken.Dto\Hadouken.Dto.csproj", "{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hadouken.Dto", "Hadouken.Dto\Hadouken.Dto.csproj", "{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hadouken.Web", "Hadouken.Web\Hadouken.Web.csproj", "{FE1DAA1F-53FC-4B14-96BE-C28CFEDB98F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692AEF42-1E1E-412D-98EA-BBCFFE010D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE1DAA1F-53FC-4B14-96BE-C28CFEDB98F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE1DAA1F-53FC-4B14-96BE-C28CFEDB98F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE1DAA1F-53FC-4B14-96BE-C28CFEDB98F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE1DAA1F-53FC-4B14-96BE-C28CFEDB98F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
