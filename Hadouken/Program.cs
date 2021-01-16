@@ -36,6 +36,7 @@ namespace Hadouken
                 .CreateLogger();
 
             var host = Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureServices((context, services) =>
                 {
                     services.AddOptions();
@@ -48,10 +49,10 @@ namespace Hadouken
                     services.Configure<BotConfiguration>(Configuration.GetSection("Bot"));
 
                     services.AddScoped<IMessageService, MessageService>();
+                    services.AddScoped<IQuoteService, QuoteService>();
 
                     services.AddTransient<IBot, DiscordBot>();
                 })
-                .UseSerilog()
                 .Build();
 
             try

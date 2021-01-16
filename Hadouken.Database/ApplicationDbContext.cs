@@ -11,5 +11,6 @@ namespace Hadouken.Database
         { }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
     }
 }
