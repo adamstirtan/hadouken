@@ -94,7 +94,9 @@ namespace Hadouken.Database
 
             if (message.HasCharPrefix('!', ref position))
             {
-                await _commands.ExecuteAsync(new SocketCommandContext(_client, message), position, null);
+                var context = new SocketCommandContext(_client, message);
+
+                await _commands.ExecuteAsync(context, position, _serviceProvider);
             }
             else
             {
