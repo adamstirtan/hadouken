@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -75,6 +76,13 @@ namespace Hadouken
             }
 
             var exitEvent = new ManualResetEvent(false);
+
+            AssemblyLoadContext.Default.Unloading += (context) =>
+            {
+                Log.Information("Bot was stopped");
+
+                exitEvent.Set();
+            };
 
             Console.CancelKeyPress += (sender, e) =>
             {
