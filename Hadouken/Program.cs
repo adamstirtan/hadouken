@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -27,7 +28,7 @@ namespace Hadouken
         private static async Task Main(string[] args)
         {
             Configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(GetBasePath())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
                 .Build();
@@ -104,6 +105,20 @@ namespace Hadouken
             }
 
             Environment.Exit(0);
+        }
+
+        private static string GetBasePath()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (environment == "Production")
+            {
+                using var processModule = Process.GetCurrentProcess().MainModule;
+
+                return Path.GetDirectoryName(processModule?.FileName);
+            }
+
+            return Directory.GetCurrentDirectory();
         }
     }
 }
