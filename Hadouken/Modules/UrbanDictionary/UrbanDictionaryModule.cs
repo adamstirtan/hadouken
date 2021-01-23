@@ -29,7 +29,7 @@ namespace Hadouken.Modules.UrbanDictionary
 
         [Command("ud")]
         [Summary("Define a term using urbandictionary.com. Usage: !ud <term>")]
-        public async Task DefineAsync(string term)
+        public async Task DefineAsync([Remainder] string term)
         {
             _logger.LogInformation($"Attempting urban dictionary search: {term}");
 
