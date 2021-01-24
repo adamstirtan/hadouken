@@ -18,11 +18,11 @@ namespace Hadouken.Modules.Quotes
             _logger = logger;
         }
 
-        // [Command("vape30")]
-        // [Summary("It's VAPE:30 boys")]
-        // public Task VapeAsync()
-        // {
-        //     return Task.CompletedTask;
-        // }
+        [Command("vape30")]
+        [Summary("It's VAPE:30 boys")]
+        public Task VapeAsync()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

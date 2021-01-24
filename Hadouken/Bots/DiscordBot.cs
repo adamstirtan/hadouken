@@ -9,13 +9,9 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
-using Quartz;
-using Quartz.Impl;
-
 using Hadouken.Bots;
 using Hadouken.Configuration;
 using Hadouken.Database.Services;
-using Hadouken.Jobs;
 using Hadouken.ObjectModel;
 
 namespace Hadouken.Database
@@ -28,8 +24,6 @@ namespace Hadouken.Database
         private readonly BotConfiguration _configuration;
         private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
-
-        private IScheduler _scheduler;
 
         public DiscordBot(
             IServiceProvider serviceProvider,
@@ -69,28 +63,6 @@ namespace Hadouken.Database
         {
             await _client.LoginAsync(TokenType.Bot, _configuration.Credentials.Token);
             await _client.StartAsync();
-            await ScheduleTasksAsync();
-        }
-
-        private async Task ScheduleTasksAsync()
-        {
-            var factory = new StdSchedulerFactory();
-
-            _scheduler = await factory.GetScheduler();
-
-            var job = JobBuilder.Create<RssJob>()
-                .WithIdentity("rssJob", "default")
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity("triggerJob", "default")
-                .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInHours(24)
-                    .RepeatForever())
-                .Build();
-
-            await _scheduler.ScheduleJob(job, trigger);
         }
 
         private async Task HandleMessageReceivedAsync(SocketMessage arg)
@@ -130,11 +102,7 @@ namespace Hadouken.Database
         {
             _logger.LogError(arg.Message);
 
-            if (_scheduler is not null && !_scheduler.IsShutdown)
-            {
-                await _scheduler.Shutdown();
-            }
-
+            await StopAsync();
             await ConnectAsync();
         }
 
