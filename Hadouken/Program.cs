@@ -40,6 +40,7 @@ namespace Hadouken
 
             var host = Host.CreateDefaultBuilder(args)
                 .UseSerilog()
+                .UseSystemd()
                 .ConfigureServices((context, services) =>
                 {
                     services.AddOptions();
